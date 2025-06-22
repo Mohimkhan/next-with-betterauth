@@ -4,7 +4,8 @@ import "./globals.css";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
-import { SessionProvider } from "next-auth/react";
+import CustomToastContainer from "@/components/CustomToastContainer";
+import "react-toastify/dist/ReactToastify.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,7 +34,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased font-[family-name:var(--font-geist-sans)] w-full min-h-[100dvh] dark:bg-black bg-white  dark:bg-dot-white/[0.2] bg-dot-black/[0.2]`}
+        className={`${geistSans.variable} ${geistMono.variable} relative antialiased font-[family-name:var(--font-geist-sans)] w-full min-h-[100dvh] dark:bg-black bg-white  dark:bg-dot-white/[0.2] bg-dot-black/[0.2]`}
       >
         <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_78%,black)]"></div>
         <NextThemesProvider
@@ -43,13 +44,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {" "}
-          <SessionProvider>
-            <div className="container mx-auto px-[10px] sm:px-0">
-              <Header />
-              {children}
-              <Footer />
-            </div>
-          </SessionProvider>
+          <div className="container mx-auto px-[10px] sm:px-0 h-[100dvh]">
+            <Header />
+            {children}
+            <Footer />
+          </div>
+          <CustomToastContainer />
         </NextThemesProvider>
       </body>
     </html>

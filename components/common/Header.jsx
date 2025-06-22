@@ -2,15 +2,17 @@
 import Link from "next/link";
 import { AnimatedTooltip } from "../ui/animated-tooltip";
 import { useState } from "react";
-import { signOut, useSession } from "next-auth/react";
 import { appName, LOGOUT_MODAL_ID } from "@/constants";
 import LogoutModal from "../modals/LogoutModal";
 import { ThemeBtn } from "./ThemeBtn";
 import { KeyboardIcon, Crown, Settings, User, LogOut } from "lucide-react";
+import { signOut, useSession } from "@/lib/auth-client";
 
 const Header = () => {
   const { data: session } = useSession();
   const [isUserActionVisible, setIsUserActionVisible] = useState(false);
+
+  console.log({ session });
 
   return (
     <>
@@ -153,6 +155,7 @@ const Header = () => {
                     },
                   ]}
                   setIsUserActionVisible={setIsUserActionVisible}
+                  isUserActionVisible={isUserActionVisible}
                 />
                 {isUserActionVisible && (
                   <ul
@@ -192,7 +195,7 @@ const Header = () => {
             ) : (
               <>
                 <div className="text-xl dark:text-[#e6eef7] text-[#1e293b] hover:scale-110">
-                  <Link href="/login">
+                  <Link href="/register">
                     <User />
                   </Link>
                 </div>
@@ -205,8 +208,12 @@ const Header = () => {
         onConfirmation={() => {
           setIsUserActionVisible(false);
           signOut();
+          document.getElementById(LOGOUT_MODAL_ID).close();
         }}
-        onCancellation={() => setIsUserActionVisible(false)}
+        onCancellation={() => {
+          setIsUserActionVisible(false);
+          document.getElementById(LOGOUT_MODAL_ID).close();
+        }}
       />
     </>
   );
